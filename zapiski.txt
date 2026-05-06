@@ -1,0 +1,4 @@
+Izotonične/Kontrola - 	A,E,G,Y700
+Hipotonične - 		    C,F
+stradane aminokislin -	D
+hipoglikemične - 	    Y200,Y500
