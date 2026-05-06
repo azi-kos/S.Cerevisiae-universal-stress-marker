@@ -16,18 +16,19 @@ library(dplyr)
 # --- 2. Poti -----------------------------------------------------------------
 SCRIPT_DIR <- dirname(rstudioapi::getSourceEditorContext()$path)
 RESULT_DIR <- file.path(SCRIPT_DIR, "rezultati")
+DESEQ_DIR  <- file.path(RESULT_DIR, "deseq2")
 GO_DIR     <- file.path(RESULT_DIR, "GO")
 dir.create(GO_DIR, showWarnings = FALSE)
 
 # --- 3. Uvoz skupnih DEG-ov --------------------------------------------------
-common_table <- read.csv(file.path(RESULT_DIR, "skupni_DEGs_vsi_3_pogoji.csv"))
+common_table <- read.csv(file.path(DESEQ_DIR, "skupni_DEGs_vsi_3_pogoji.csv"))
 
 # Odstrani ERCC spike-ine
 common_table <- common_table[!grepl("^ERCC-", common_table$gene), ]
 cat("Skupnih yeast DEG-ov:", nrow(common_table), "\n")
 
 # Celoten seznam genov iz ene od DESeq2 tabel (ozadje za enrichment)
-background <- read.csv(file.path(RESULT_DIR, "DESeq2_aa_starvation_vs_control.csv"))
+background <- read.csv(file.path(DESEQ_DIR, "DESeq2_aa_starvation_vs_control.csv"))
 background <- background$gene[!grepl("^ERCC-", background$gene)]
 cat("Ozadje (vsi testirani geni):", length(background), "\n")
 

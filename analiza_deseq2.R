@@ -21,7 +21,9 @@ DATA_DIR    <- file.path(dirname(rstudioapi::getSourceEditorContext()$path),
                          "podatki", "GSE201386_RAW")
 RESULT_DIR  <- file.path(dirname(rstudioapi::getSourceEditorContext()$path),
                          "rezultati")
-dir.create(RESULT_DIR, showWarnings = FALSE)
+DESEQ_DIR   <- file.path(RESULT_DIR, "deseq2")
+dir.create(RESULT_DIR,  showWarnings = FALSE)
+dir.create(DESEQ_DIR,   showWarnings = FALSE)
 
 QC_ROWS <- c("no_feature", "ambiguous", "too_low_aQual",
              "not_aligned", "alignment_not_unique")
@@ -111,9 +113,9 @@ res_aa           <- get_results(dds, "aa_starvation_vs_control", "aa_starvation"
 res_hypoglycemic <- get_results(dds, "hypoglycemic_vs_control", "hypoglycemic")
 
 # Shrani CSV
-write.csv(res_hypotonic,    file.path(RESULT_DIR, "DESeq2_hypotonic_vs_control.csv"),    row.names = FALSE)
-write.csv(res_aa,           file.path(RESULT_DIR, "DESeq2_aa_starvation_vs_control.csv"), row.names = FALSE)
-write.csv(res_hypoglycemic, file.path(RESULT_DIR, "DESeq2_hypoglycemic_vs_control.csv"), row.names = FALSE)
+write.csv(res_hypotonic,    file.path(DESEQ_DIR, "DESeq2_hypotonic_vs_control.csv"),    row.names = FALSE)
+write.csv(res_aa,           file.path(DESEQ_DIR, "DESeq2_aa_starvation_vs_control.csv"), row.names = FALSE)
+write.csv(res_hypoglycemic, file.path(DESEQ_DIR, "DESeq2_hypoglycemic_vs_control.csv"), row.names = FALSE)
 
 # --- 7. Skupni DEG-i (presek vseh 3 primerjav) --------------------------------
 sig_genes <- function(res_df) {
@@ -137,7 +139,7 @@ common_table <- data.frame(gene = common_degs) %>%
   left_join(res_aa           %>% select(gene, log2FoldChange, padj) %>% rename(lfc_aa = log2FoldChange, padj_aa = padj),                   by = "gene") %>%
   left_join(res_hypoglycemic %>% select(gene, log2FoldChange, padj) %>% rename(lfc_hypoglycemic = log2FoldChange, padj_hypoglycemic = padj), by = "gene")
 
-write.csv(common_table, file.path(RESULT_DIR, "skupni_DEGs_vsi_3_pogoji.csv"), row.names = FALSE)
+write.csv(common_table, file.path(DESEQ_DIR, "skupni_DEGs_vsi_3_pogoji.csv"), row.names = FALSE)
 cat("Tabela skupnih DEG-ov shranjena.\n")
 
 # --- 8. Vizualizacije --------------------------------------------------------
@@ -156,7 +158,7 @@ p_pca <- ggplot(pca_data, aes(PC1, PC2, color = condition)) +
   theme_bw() +
   ggtitle("PCA — vzorci po pogojih")
 
-ggsave(file.path(RESULT_DIR, "PCA_pogoji.png"), p_pca, width = 7, height = 5, dpi = 150)
+ggsave(file.path(DESEQ_DIR, "PCA_pogoji.png"), p_pca, width = 7, height = 5, dpi = 150)
 
 # 8b. Volcano ploti
 make_volcano <- function(res_df, title) {
@@ -190,9 +192,9 @@ p_v1 <- make_volcano(res_hypotonic,    "Volcano: hipotonično vs. kontrola")
 p_v2 <- make_volcano(res_aa,           "Volcano: stradanje AA vs. kontrola")
 p_v3 <- make_volcano(res_hypoglycemic, "Volcano: hipoglikemično vs. kontrola")
 
-ggsave(file.path(RESULT_DIR, "volcano_hypotonic.png"),    p_v1, width = 7, height = 5, dpi = 150)
-ggsave(file.path(RESULT_DIR, "volcano_aa_starvation.png"), p_v2, width = 7, height = 5, dpi = 150)
-ggsave(file.path(RESULT_DIR, "volcano_hypoglycemic.png"),  p_v3, width = 7, height = 5, dpi = 150)
+ggsave(file.path(DESEQ_DIR, "volcano_hypotonic.png"),    p_v1, width = 7, height = 5, dpi = 150)
+ggsave(file.path(DESEQ_DIR, "volcano_aa_starvation.png"), p_v2, width = 7, height = 5, dpi = 150)
+ggsave(file.path(DESEQ_DIR, "volcano_hypoglycemic.png"),  p_v3, width = 7, height = 5, dpi = 150)
 
 # 8c. Heatmap skupnih DEG-ov
 if (length(common_degs) > 1) {
@@ -215,7 +217,7 @@ if (length(common_degs) > 1) {
     mat <- mat[top_genes, ]
   }
 
-  png(file.path(RESULT_DIR, "heatmap_skupni_DEGs.png"),
+  png(file.path(DESEQ_DIR, "heatmap_skupni_DEGs.png"),
       width = 1200, height = max(800, nrow(mat) * 12), res = 150)
   pheatmap(mat,
            annotation_col  = annotation_col,
