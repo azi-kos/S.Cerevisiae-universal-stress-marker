@@ -80,6 +80,21 @@ GO (Gene Ontology) je standardiziran sistem kategorij bioloških funkcij. Prever
 Najmočneje reguliran gen v vseh treh pogojih (log2FC ≈ 30). ZNF1 je **transkripcijski faktor** ki regulira preklop iz fermentacije na respiracijo in odpornost na osmotski stres — verjetno osrednji regulator splošnega stresnega odgovora.
 
 ---
+Transkripcijski faktorji (ZNF1, PUL4, HMS1) — celica aktivira regulatorne proteine ki nato kaskadno spremenijo ekspresijo stotih genov. To razloži zakaj vidimo tako veliko skupnih DEG-ov.
+
+GAL10 — aktivacija alternativnih sladkornih poti ko primanjkuje glukoze ali aminokislin je smiselna.
+
+MEC3 — DNA popravljalni checkpoint je aktiviran v vseh treh stresih, kar potrjuje GO rezultat o DNA popravljanju.
+
+SME1 — jedrni del spliceosoma, potrjuje GO rezultat o spliceosomu in mRNA procesiranju.
+
+HSP33 — posebej zanimiv ker je homolog humanega PARK7/DJ-1 ki je povezan s Parkinsonovo boleznijo. Tudi pri kvasovki je odgovoren za odpornost na oksidativni stres in dolgožvost celic.
+
+SDS3 — histon deacetilaza, potrjuje GO rezultat o epigenetski regulaciji.
+
+DUS3 — edini konsistentno down gen med top 10, modificira tRNA. Celica morda zmanjša tRNA modifikacije da upočasni translacijo med stresom.
+
+---
 
 
 ## Kako ponoviti analizo
